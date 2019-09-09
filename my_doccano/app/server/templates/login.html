@@ -1,62 +1,66 @@
 {% load static %}
-<!DOCTYPE html>
-
-<html lang="zh-CN"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <title>登录- </title>
-    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
-    <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="renderer" content="webkit">
-    <link rel="stylesheet" href="{% static 'assets/css/bootstrap.min.css' %}">
-    <link rel="stylesheet" href="{% static 'assets/css/base.css' %}">
-    <link rel="stylesheet" href="{% static 'assets/css/register.css' %}">
-<!--    <link rel="stylesheet" href="/static/css/bootstrap.min.css">-->
-<!--    <link rel="stylesheet" href="/static/css/base.css">-->
-<!--    <link rel="stylesheet" href="/static/css/register.css">-->
-
-
-<style type="text/css">@keyframes animate_dots{0%{opacity:1}to{opacity:0}}@-webkit-keyframes animate_dots{0%{opacity:1}to{opacity:0}}.dot0,.dot1{animation:animate_dots .9s infinite;-moz-animation:animate_dots .9s infinite;-webkit-animation:animate_dots .9s infinite;-o-animation:animate_dots .9s infinite}.dot1{animation-delay:.2s;-webkit-animation-delay:.2s}.dot2{animation:animate_dots .9s infinite;-moz-animation:animate_dots .9s infinite;-webkit-animation:animate_dots .9s infinite;-o-animation:animate_dots .9s infinite;animation-delay:.4s;-webkit-animation-delay:.4s}.dots_item{display:inline-block;margin-right:5px;width:10px;height:10px;border-radius:50%;background:#4886ff}.verify-icon{position:absolute;width:100%;margin-top:70px;text-align:center}.t-mask{width:100%;height:100%;position:fixed;_position:absolute;left:0;top:0;background:#000;opacity:.5;filter:progid:DXImageTransform.Microsoft.Alpha(opacity=50);z-index:2000000000}</style><script type="text/javascript" async="" ></script></head>
-<body style="background-color: #f7f8fa;">
-
-
-<div class="upgrade_tips" id="tipsBrowserInfo" style="display: none"></div>
-<div id="body" class="container">
-    <div id="content">
-        <div class="container" style="padding-left:0px;padding-right:0px;">
-            <div id="form-title"><img src="{% static 'assets/images/login.png' %}" style=' width:45px'>数据标注平台</div>
-            <form id="submit-form" action="/login/" method="post">
-                {% csrf_token %}
-
-                <div id="form-content">
-                    <div id="form-msg">登录账号&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp<span style="font-size: 15px;color: red">{{ msg }}</span></div>
-                    <div id="form-inputs">
-                        <div class="form-input">
-                            <i class="iconfont"></i>
-                            <input placeholder="账号" type="text"  name="username" >
-
-                            <div class="err_msg" id="email_err"></div>
-                        </div>
-                        <div class="form-input">
-                            <i class="iconfont"></i>
-                            <input placeholder="密码" type="password" id="pwd" name="password">
-
-                            <div class="err_msg" id="pwd_err"></div>
-                        </div>
-                        <div class="form-submit">
-                            <button type="submit" class="btn btn-primary" id="submitBtn" >立即登录</button>
-                        </div>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+    <title>美多商城-登录</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/reset.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/main.css' %}">
+    <script type="text/javascript" src="{% static 'js/host.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/vue-2.5.16.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/axios-0.18.0.min.js' %}"></script>
+</head>
+<body>
+    <div class="login_top clearfix">
+        <a href="index.html" class="login_logo"><img src="{% static 'images/logo02.png' %}"></a>
+    </div>
+    <div class="login_form_bg" id='app'>
+        <div class="login_form_wrap clearfix">
+            <div class="login_banner fl"></div>
+            <div class="slogan fl">欢迎使用标签标注平台</div>
+            <div class="login_form fr">
+                <div class="login_title clearfix">
+                    <a href="javascript:;" class="cur">账户登录</a>
+                </div>
+                <div class="form_con">
+                    <div class="form_input cur">
+                        <form id="login-form" @submit.prevent="on_submit">
+                            <input type="text" v-model="username" @blur="check_username" name="" class="name_input" placeholder="请输入用户名或手机号">
+                            <div v-show="error_username" class="user_error" v-cloak>请填写用户名</div>
+                            <input type="password" v-model="password" @blur="check_pwd" name="pwd" class="pass_input" placeholder="请输入密码">
+                            <div v-show="error_pwd" class="pwd_error" v-cloak>{{ error_pwd_message }}</div>
+                            <div class="more_input clearfix">
+                                <input type="checkbox" v-model="remember">
+                                <label>记住登录</label>
+                                <a href="/find_password.html">忘记密码</a>
+                            </div>
+                            <input type="submit" name="" value="登 录" class="input_submit">
+                        </form>
                     </div>
                 </div>
-            </form>
+                <div class="third_party">
+<!--                    <a @click="qq_login" class="qq_login">QQ</a>-->
+<!--                    <a href="#" class="weixin_login">微信</a>-->
+                    <a href="/register" class="register_btn">立即注册</a>
+                </div>
+
+            </div>
         </div>
     </div>
-</div>
-<div class="bottom-left">
-    <img src="{% static 'assets/images/bottom-left.png'%}">
-</div>
-<div class="bottom-right">
-<!--    <img src="/static/pic/bottom-right.png">-->
-    <img src="{% static 'assets/images/bottom-right.png'%}">
-</div>
 
-</body></html>
+    <div class="footer no-mp">
+        <div class="foot_link">
+            <a href="#">关于我们</a>
+            <span>|</span>
+            <a href="#">联系我们</a>
+            <span>|</span>
+            <a href="#">招聘人才</a>
+            <span>|</span>
+            <a href="#">友情链接</a>
+        </div>
+        <p>CopyRight © 2016 北京美多商业股份有限公司 All Rights Reserved</p>
+        <p>电话：010-****888    京ICP备*******8号</p>
+    </div>
+    <script type="text/javascript" src="{% static 'js/login.js' %}"></script>
+</body>
+</html>

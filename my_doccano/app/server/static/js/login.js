@@ -37,45 +37,44 @@ var vm = new Vue({
         },
         // 表单提交
         on_submit: function(){
-            alert(1)
             this.check_username();
             this.check_pwd();
 
             if (this.error_username == false && this.error_pwd == false) {
-                axios.post(this.host+'/login/', {
+                axios.post(this.host+'/authorizations/', {
                         username: this.username,
                         password: this.password
                     }, {
                         responseType: 'json',
-                        withCredentials: true,
+                        withCredentials: true
                     })
-                    .then(
-//                        response => {
+                    .then(response => {
                         // 使用浏览器本地存储保存token
-//                        if (this.remember) {
-//                            // 记住登录
-//                            sessionStorage.clear();
-//                            localStorage.token = response.data.token;
-//                            localStorage.user_id = response.data.user_id;
-//                            localStorage.username = response.data.username;
-//                        } else {
-//                            // 未记住登录
-//                            localStorage.clear();
-//                            sessionStorage.token = response.data.token;
-//                            sessionStorage.user_id = response.data.user_id;
-//                            sessionStorage.username = response.data.username;
-//                        }
+                        if (this.remember) {
+                            // 记住登录
+                            sessionStorage.clear();
+                            localStorage.token = response.data.token;
+                            localStorage.user_id = response.data.user_id;
+                            localStorage.username = response.data.username;
+                        } else {
+                            // 未记住登录
+                            localStorage.clear();
+                            sessionStorage.token = response.data.token;
+                            sessionStorage.user_id = response.data.user_id;
+                            sessionStorage.username = response.data.username;
+                        }
 
                         // 跳转页面
-//                        var return_url = this.get_query_string('next');
-//                        if (!return_url) {
-//                            return_url = '/index.html';
-//                        }
-//                        location.href = return_url;
-                          alert("登陆成功")
+                        var return_url = this.get_query_string('next');
+                        if (!return_url) {
+                            return_url = '/index.html';
+                        }
+                        // var return_url = '/index.html';
+                        location.href = return_url;
                     })
                     .catch(error => {
                         if (error.response.status == 400) {
+                            alert(1)
                             this.error_pwd_message = '用户名或密码错误';
                         } else {
                             this.error_pwd_message = '服务器错误';
@@ -86,16 +85,7 @@ var vm = new Vue({
         },
         // qq登录
         qq_login: function(){
-            var next = this.get_query_string('next') || '/';
-            axios.get(this.host + '/oauth/qq/authorization/?next=' + next, {
-                    responseType: 'json'
-                })
-                .then(response => {
-                    location.href = response.data.login_url;
-                })
-                .catch(error => {
-                    console.log(error.response.data);
-                })
+
         }
     }
 });

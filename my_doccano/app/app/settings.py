@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/2.1/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/2.1/ref/settings/
 """
-
+import datetime
 import os
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -87,6 +87,21 @@ AUTH_USER_MODEL = 'api.User'
 # Database
 # https://docs.djangoproject.com/en/2.1/ref/settings/#databases
 
+REST_FRAMEWORK = {
+    # 异常处理
+    # 'EXCEPTION_HANDLER': 'meiduo_mall.utils.exceptions.exception_handler',
+
+    # 认证
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+        'rest_framework.authentication.BasicAuthentication',
+    ),
+
+    # 分页
+    # 'DEFAULT_PAGINATION_CLASS': 'meiduo_mall.utils.pagination.StandardResultsSetPagination',
+}
+
 DATABASES = {
      'default': {
         'ENGINE': 'django.db.backends.mysql',
@@ -122,7 +137,10 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
+JWT_AUTH = {
+    'JWT_EXPIRATION_DELTA': datetime.timedelta(days=1),
+    'JWT_RESPONSE_PAYLOAD_HANDLER': 'utils.jwt_response_payload_handler',
+}
 # Internationalization
 # https://docs.djangoproject.com/en/2.1/topics/i18n/
 

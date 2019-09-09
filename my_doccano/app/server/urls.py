@@ -17,14 +17,16 @@ from django.conf.urls import url
 from django.contrib import admin
 from  django.contrib.auth import views as auth_views
 from django.urls import path
+from rest_framework_jwt.views import obtain_jwt_token
 
-from server.views import (LoginView,UsernameCountView,MobileCountView,UserView)
+from server.views import (UsernameCountView, MobileCountView, UserView, Register)
 
 urlpatterns = [
-    url(r"^login/$", LoginView.as_view()),
+    url(r'^authorizations/$', obtain_jwt_token),
     url(r'^usernames/(?P<username>\w{1,20})/count/$', UsernameCountView.as_view()),
     url(r'^mobiles/(?P<mobile>1[3-9]\d{9})/count/$', MobileCountView.as_view()),
     url(r'^(?P<mobile>1[3-9]\d{9})/count/$', MobileCountView.as_view()),
     url(r'^users/$', UserView.as_view()),
+    url(r'^register/$', Register.as_view()),
     # path('login/', LoginView.as_view(), name='login'),
 ]

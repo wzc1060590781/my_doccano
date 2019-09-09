@@ -2,33 +2,33 @@ from django.contrib.auth import authenticate
 from rest_framework import status
 from rest_framework.generics import CreateAPIView
 from rest_framework.mixins import ListModelMixin
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from django.shortcuts import render
 
 # Create your views here.
 from rest_framework.views import APIView
 
+# from api.models import User
+
+# from my_doccano.app.api.serializers import UserSerializer
 from api.models import User
-from serializers import UserSerializer
+
+
 from server import serializers
-from server.serializers import LoginSerializer
+from server.my_permissions import RegisterPermission
+
+class Register(APIView):
+    print(2)
+    permission_classes = [IsAuthenticated]
+    def get(self,request):
+        print(1)
+        return render(request,"register.html")
 
 
 class LoginView(APIView):
-    serializer_class = UserSerializer
     def get(self,request):
-        return render(request,"login_2.html")
-
-    def post(self,request,*args,**kwargs):
-    #     # s = self.get_s
-        serializer = LoginSerializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        username=request.data.get('username')
-        password = request.data.get('password')
-        user = authenticate(username=username, password=password)
-        if user is not None:
-            return Response(serializer.data,status=status.HTTP_200_OK)
-        return Response({"message":"用户名或验证码有误"},status=status.HTTP_400_BAD_REQUEST)
+        return render(request,"login.html")
 
 
 # 检验用户名
@@ -63,12 +63,14 @@ class MobileCountView(APIView):
         }
 
         return Response(data)
+
 class UserView(CreateAPIView):
     """
     用户注册
     传入参数：
         username, password, password2, sms_code, mobile, allow
     """
+    permission_classes = [IsAuthenticated,RegisterPermission]
     serializer_class = serializers.CreateUserSerializer
 
 

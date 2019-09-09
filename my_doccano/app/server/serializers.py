@@ -2,40 +2,18 @@ from rest_framework import serializers
 from rest_framework.generics import CreateAPIView
 
 # from models import User
+# from rest_framework.settings import api_settings
+from rest_framework_jwt.settings import api_settings
 from api.models import User
-
-
-class LoginSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = User
-
-        fields = ("mobile","username")
-        extra_kwargs = {
-            "username":{
-                "min_length":0,
-                "max_length":20,
-                "error_messages":{
-                    "min_length":"用户名不得超过20个字符"
-                }
-            },
-            "password":{
-                "write_only":True,
-                "min_length":8,
-                "max_length":20,
-                "error_messages":{
-                    "min_length":"仅允许8-20个字符的密码",
-                    "max_length":"仅允许8-20个字符的密码"
-                }
-            }
-        }
+from app import settings
 
 class CreateUserSerializer(serializers.ModelSerializer):
     """创建用户的序列化器"""
     password2 = serializers.CharField(label='确认密码', write_only=True)
-
+    token = serializers.CharField(label='登录状态token', read_only=True)  # 增加token字段
     class Meta:
         model = User
-        fields = ('id', 'username', 'password', 'password2',"mobile")
+        fields = ('id', 'username', 'password', 'password2',"mobile","token")
         extra_kwargs = {
             'username': {
                 'min_length': 1,
@@ -78,5 +56,10 @@ class CreateUserSerializer(serializers.ModelSerializer):
         user = super().create(validated_data)
 
         user.set_password(validated_data['password'])
+        jwt_payload_handler = api_settings.JWT_PAYLOAD_HANDLER
+        jwt_encode_handler = api_settings.JWT_ENCODE_HANDLER
+        payload = jwt_payload_handler(user)
+        token = jwt_encode_handler(payload)
+        user.token = token
         user.save()
         return user
