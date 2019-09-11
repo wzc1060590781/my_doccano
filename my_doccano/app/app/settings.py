@@ -106,7 +106,7 @@ DATABASES = {
      'default': {
         'ENGINE': 'django.db.backends.mysql',
 	#数据库名（需要提前创建）
-        'NAME': 'my_doccano',
+        'NAME': 'my_doccano_2',
         #用户名
         'USER':'root',
         # 密码

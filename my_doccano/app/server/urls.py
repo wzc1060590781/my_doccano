@@ -19,7 +19,7 @@ from  django.contrib.auth import views as auth_views
 from django.urls import path
 from rest_framework_jwt.views import obtain_jwt_token
 
-from server.views import (UsernameCountView, MobileCountView, UserView, Register)
+from server.views import (UsernameCountView, MobileCountView, Register, ProjectView, UserView)
 
 urlpatterns = [
     url(r'^authorizations/$', obtain_jwt_token),
@@ -28,5 +28,5 @@ urlpatterns = [
     url(r'^(?P<mobile>1[3-9]\d{9})/count/$', MobileCountView.as_view()),
     url(r'^users/$', UserView.as_view()),
     url(r'^register/$', Register.as_view()),
-    # path('login/', LoginView.as_view(), name='login'),
+    url(r'^projects/$', ProjectView.as_view()),
 ]

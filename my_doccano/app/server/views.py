@@ -1,7 +1,7 @@
 from django.contrib.auth import authenticate
 from rest_framework import status
-from rest_framework.generics import CreateAPIView
-from rest_framework.mixins import ListModelMixin
+from rest_framework.generics import CreateAPIView, GenericAPIView, ListAPIView
+from rest_framework.mixins import ListModelMixin, RetrieveModelMixin, CreateModelMixin
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from django.shortcuts import render
@@ -12,18 +12,23 @@ from rest_framework.views import APIView
 # from api.models import User
 
 # from my_doccano.app.api.serializers import UserSerializer
-from api.models import User
-
+from api.models import User, Project
 
 from server import serializers
 from server.my_permissions import RegisterPermission
+from server.serializers import ProjectSerializer
+
 
 class Register(APIView):
-    print(2)
-    permission_classes = [IsAuthenticated]
-    def get(self,request):
-        print(1)
-        return render(request,"register.html")
+    # print(2)
+    permission_classes = [IsAuthenticated,RegisterPermission]
+    def get_object(self):
+        print("get_object")
+        return self.request.user
+
+        # return render(request,"register.html")
+
+    # def
 
 
 class LoginView(APIView):
@@ -70,12 +75,23 @@ class UserView(CreateAPIView):
     传入参数：
         username, password, password2, sms_code, mobile, allow
     """
-    permission_classes = [IsAuthenticated,RegisterPermission]
+    permission_classes = [IsAuthenticated]
     serializer_class = serializers.CreateUserSerializer
+    def get_object(self):
+        print("request.user",self.request.user.Role)
+        return self.request.user
 
+#
+class ProjectView(ListModelMixin,RetrieveModelMixin,CreateModelMixin,GenericAPIView):
+    permission_classes = [IsAuthenticated]
+    serializer_class = ProjectSerializer
 
-# class User(ListModelMixin):
-#     def get(self):
+    def get_queryset(self):
+        return self.request.user.project_set.all()
+    # def get_queryset(self):
+    #     Project.object.filter(pk = self.request.user.)
+
+    # def get(self,request):
 
 
 

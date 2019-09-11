@@ -13,7 +13,7 @@ class BaseModel(models.Model):
 # Create your models here.
 class User(AbstractUser):
     mobile = models.CharField(max_length=11, unique=True, verbose_name="手机号")
-    role = models.SmallIntegerField(verbose_name="角色")
+    role_id = models.SmallIntegerField(verbose_name="角色",default=4)  # Field name made lowercase.
 
     class Meta:
         db_table = "tb_users"
@@ -21,15 +21,26 @@ class User(AbstractUser):
         verbose_name_plural = verbose_name
 
 
+
 class Project(BaseModel):
-    name = models.CharField(max_length=20, unique=True, verbose_name="项目名称")
+    name = models.CharField(max_length=200, unique=True, verbose_name="项目名称")
     owner = models.ForeignKey("User", related_name="projects", blank=True, on_delete=models.SET_NULL,null=True,
                               verbose_name="项目管理者")
-
+    description = models.CharField(max_length=500, verbose_name="项目描述",null=True)
+    # user = models.ManyToManyField(to='User')
     class Meta:
-        db_table = "projects"
+        db_table = "tb_projects"
         verbose_name = "项目表"
 
+
+class UserProject(BaseModel):
+    user = models.ForeignKey("User", related_name="user", blank=True, on_delete=models.CASCADE,
+                               verbose_name="用户id")
+    project = models.ForeignKey("Project", related_name="project", blank=True, on_delete=models.CASCADE, verbose_name="所在项目id")
+
+    class Meta:
+        db_table = "tb_userprojects"
+        verbose_name = "用户项目关系表"
 
 class Category(BaseModel):
     name = models.CharField(max_length=20, unique=True, verbose_name="分类名称")

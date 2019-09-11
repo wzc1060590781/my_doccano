@@ -4,16 +4,16 @@ from rest_framework.generics import CreateAPIView
 # from models import User
 # from rest_framework.settings import api_settings
 from rest_framework_jwt.settings import api_settings
-from api.models import User
+from api.models import User, Project
 from app import settings
 
 class CreateUserSerializer(serializers.ModelSerializer):
     """创建用户的序列化器"""
     password2 = serializers.CharField(label='确认密码', write_only=True)
-    token = serializers.CharField(label='登录状态token', read_only=True)  # 增加token字段
+    # token = serializers.CharField(label='登录状态token', read_only=True)  # 增加token字段
     class Meta:
         model = User
-        fields = ('id', 'username', 'password', 'password2',"mobile","token")
+        fields = ('id', 'username', 'password', 'password2',"mobile")
         extra_kwargs = {
             'username': {
                 'min_length': 1,
@@ -54,12 +54,13 @@ class CreateUserSerializer(serializers.ModelSerializer):
         # user = User.objects.create(**validated_data)
 
         user = super().create(validated_data)
-
         user.set_password(validated_data['password'])
-        jwt_payload_handler = api_settings.JWT_PAYLOAD_HANDLER
-        jwt_encode_handler = api_settings.JWT_ENCODE_HANDLER
-        payload = jwt_payload_handler(user)
-        token = jwt_encode_handler(payload)
-        user.token = token
         user.save()
+
         return user
+
+class ProjectSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Project
+        fields = ('id', 'name', 'owner',"description")
+

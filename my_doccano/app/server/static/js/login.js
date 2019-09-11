@@ -56,25 +56,26 @@ var vm = new Vue({
                             localStorage.token = response.data.token;
                             localStorage.user_id = response.data.user_id;
                             localStorage.username = response.data.username;
+                            localStorage.role_id = response.data.role_id;
                         } else {
                             // 未记住登录
                             localStorage.clear();
                             sessionStorage.token = response.data.token;
                             sessionStorage.user_id = response.data.user_id;
                             sessionStorage.username = response.data.username;
+                            sessionStorage.role_id = response.data.role_id;
                         }
 
                         // 跳转页面
                         var return_url = this.get_query_string('next');
                         if (!return_url) {
-                            return_url = '/index.html';
+                            return_url = '/static/register.html';
                         }
                         // var return_url = '/index.html';
                         location.href = return_url;
                     })
                     .catch(error => {
                         if (error.response.status == 400) {
-                            alert(1)
                             this.error_pwd_message = '用户名或密码错误';
                         } else {
                             this.error_pwd_message = '服务器错误';

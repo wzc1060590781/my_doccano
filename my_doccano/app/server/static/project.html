@@ -8,6 +8,13 @@
     <script type="text/javascript" src="js/host.js"></script>
     <script type="text/javascript" src="js/vue-2.5.16.js"></script>
     <script type="text/javascript" src="js/axios-0.18.0.min.js"></script>
+    <script>
+        var user_id = sessionStorage.user_id || localStorage.user_id;
+        var token = sessionStorage.token || localStorage.token;
+        if (!(user_id && token)) {
+            location.href = '/login?next=/static/register.html';
+        }
+    </script>
 </head>
 <body>
     <div id="app">
@@ -54,28 +61,28 @@
         <li class="col05">小计</li>
         <li class="col06">操作</li>
     </ul>
-    <ul class="cart_list_td clearfix" v-for="(sku,index) in cart">
-        <li class="col01"><input type="checkbox" name="" v-model="sku.selected" @change="update_selected(index)"></li>
-        <li class="col02"><img :src="sku.default_image_url"></li>
-        <li class="col03">{{ sku.name }}</li>
-        <li class="col05">{{ sku.price }}元</li>
-        <li class="col06">
-            <div class="num_add">
-                <a @click="on_add(index)" class="add fl">+</a>
-                <input v-model="sku.count" @focus="origin_input=sku.count" @blur="on_input(index)" type="text" class="num_show fl">
-                <a @click="on_minus(index)" class="minus fl">-</a>
-            </div>
-        </li>
-        <li class="col07">{{sku.amount}}元</li>
-        <li class="col08"><a @click="on_delete(index)">删除</a></li>
-    </ul>
+<!--    <ul class="cart_list_td clearfix" v-for="(sku,index) in cart">-->
+<!--        <li class="col01"><input type="checkbox" name="" v-model="sku.selected" @change="update_selected(index)"></li>-->
+<!--        <li class="col02"><img :src="sku.default_image_url"></li>-->
+<!--        <li class="col03">{{ sku.name }}</li>-->
+<!--        <li class="col05">{{ sku.price }}元</li>-->
+<!--        <li class="col06">-->
+<!--            <div class="num_add">-->
+<!--                <a @click="on_add(index)" class="add fl">+</a>-->
+<!--                <input v-model="sku.count" @focus="origin_input=sku.count" @blur="on_input(index)" type="text" class="num_show fl">-->
+<!--                <a @click="on_minus(index)" class="minus fl">-</a>-->
+<!--            </div>-->
+<!--        </li>-->
+<!--        <li class="col07">{{sku.amount}}元</li>-->
+<!--        <li class="col08"><a @click="on_delete(index)">删除</a></li>-->
+<!--    </ul>-->
 
-    <ul class="settlements">
-        <li class="col01"><input type="checkbox" name="" @change="on_selected_all" v-model="selected_all"></li>
-        <li class="col02">全选</li>
-        <li class="col03">合计(不含运费)：<span>¥</span><em>{{total_selected_amount}}</em><br>共计<b>{{total_selected_count}}</b>件商品</li>
-        <li class="col04"><a href="place_order.html">去结算</a></li>
-    </ul>
+<!--    <ul class="settlements">-->
+<!--        <li class="col01"><input type="checkbox" name="" @change="on_selected_all" v-model="selected_all"></li>-->
+<!--        <li class="col02">全选</li>-->
+<!--        <li class="col03">合计(不含运费)：<span>¥</span><em>{{total_selected_amount}}</em><br>共计<b>{{total_selected_count}}</b>件商品</li>-->
+<!--        <li class="col04"><a href="place_order.html">去结算</a></li>-->
+<!--    </ul>-->
 
     <div class="footer">
         <div class="foot_link">
@@ -91,6 +98,6 @@
         <p>电话：010-****888    京ICP备*******8号</p>
     </div>
     </div>
-    <script type="text/javascript" src="/js/cart.js"></script>
+    <script type="text/javascript" src="/static/js/project.js"></script>
 </body>
 </html>

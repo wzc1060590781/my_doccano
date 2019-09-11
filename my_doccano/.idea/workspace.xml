@@ -12,24 +12,31 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="Python Script" />
+        <option value="HTML File" />
       </list>
     </option>
   </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+  </component>
   <component name="ProjectId" id="1Pwue528rstuB15m4xmsJR4HgUx" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="PropertiesComponent">
+    <property name="DefaultHtmlFileTemplate" value="HTML File" />
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
-    <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
+    <property name="settings.editor.selected.configurable" value="preferences.externalResources" />
   </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
       <recent name="D:\code\my_doccano\app\server\static" />
     </key>
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\code\git\my_doccano\app\server\static\js" />
+      <recent name="D:\code\git\my_doccano\app\server\static" />
       <recent name="D:\code\my_doccano\app\server\static\static" />
       <recent name="D:\code\my_doccano\app\server\static" />
       <recent name="D:\code\my_doccano\app\server\templates" />
-      <recent name="D:\code\my_doccano\app\server\static\assets\css" />
-      <recent name="D:\code\my_doccano\app\server\static\assets\images" />
     </key>
   </component>
   <component name="RunDashboard">
@@ -49,6 +56,9 @@
       <module name="my_doccano" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
       <option name="SDK_HOME" value="" />
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/app" />
       <option name="IS_MODULE_SDK" value="true" />
@@ -125,5 +135,18 @@
       <updated>1566797571670</updated>
     </task>
     <servers />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State>
+              <option name="COLUMN_ORDER" />
+            </State>
+          </value>
+        </entry>
+      </map>
+    </option>
   </component>
 </project>

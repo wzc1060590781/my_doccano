@@ -2,13 +2,11 @@ var vm = new Vue({
     el: '#app',
     data: {
         host: host,
+
         error_name: false,
         error_password: false,
         error_check_password: false,
         error_phone: false,
-        user_id: sessionStorage.user_id || localStorage.user_id,
-        token: sessionStorage.token || localStorage.token,
-//        role_id = sessionStorage.role_id || localStorage.role_id,
 //        error_allow: false,
 //        error_image_code: false,
 //        error_sms_code: false,
@@ -26,85 +24,42 @@ var vm = new Vue({
         username: '',
         password: '',
         password2: '',
-//        mobile: '',
+        mobile: '',
 //        image_code: '',
 //        sms_code: '',
 //        allow: false
     },
-    mounted: function(){
-        // 判断用户的登录状态
-//        alert(this.token)
-//        alert(localStorage.role_id)
-//        alert(sessionStorage.role_id)
-        if (this.user_id && this.token) {
-//        alert("22222222222222222222222222")
-            axios.get(this.host + '/user/', {
-                // 向后端传递JWT token的方法
-                headers: {
-                    'Authorization': 'JWT ' + this.token
-                },
-                responseType: 'json',
-                })
-                .then(response => {
-                    // 加载用户数据
-                    this.user_id = response.data.id;
-                    this.username = response.data.username;
-                    this.role_id =response.data.role_id
-                    alert(this.role_id)
-
-                    // 补充请求浏览历史
-//                    axios.get(this.host + '/browse_histories/', {
-//                            headers: {
-//                                'Authorization': 'JWT ' + this.token
-//                            },
-//                            responseType: 'json'
-//                        })
-//                        .then(response => {
-//                            this.histories = response.data;
-//                            for(var i=0; i<this.histories.length; i++){
-//                                this.histories[i].url = '/goods/' + this.histories[i].id + '.html';
-//                            }
-//                        })
-//
-                })
-                .catch(error => {
-                    if (error.response.status==401 || error.response.status==403) {
-                        location.href = '/login?next=/static/register.html';
-                    }
-                });
-        } else {
-            alert(1111)
-            location.href = '/login?next=/register.html';
-        }
-    },
+//    mounted: function(){
+//        this.generate_image_code();
+//    },
     methods: {
         // 生成uuid
-        // generate_uuid: function(){
-        //     var d = new Date().getTime();
-        //     if(window.performance && typeof window.performance.now === "function"){
-        //         d += performance.now(); //use high-precision timer if available
-        //     }
-        //     var uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
-        //         var r = (d + Math.random()*16)%16 | 0;
-        //         d = Math.floor(d/16);
-        //         return (c =='x' ? r : (r&0x3|0x8)).toString(16);
-        //     });
-        //     return uuid;
-        // },
-        // // 生成一个图片验证码的编号，并设置页面中图片验证码img标签的src属性
-        // generate_image_code: function(){
-        //     // 生成一个编号
-        //     // 严格一点的使用uuid保证编号唯一， 不是很严谨的情况下，也可以使用时间戳
-        //     this.image_code_id = this.generate_uuid();
-        //
-        //     // 设置页面中图片验证码img标签的src属性
-        //     this.image_code_url = this.host + "/image_codes/" + this.image_code_id + "/";
-        // },
+//        generate_uuid: function(){
+//            var d = new Date().getTime();
+//            if(window.performance && typeof window.performance.now === "function"){
+//                d += performance.now(); //use high-precision timer if available
+//            }
+//            var uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+//                var r = (d + Math.random()*16)%16 | 0;
+//                d = Math.floor(d/16);
+//                return (c =='x' ? r : (r&0x3|0x8)).toString(16);
+//            });
+//            return uuid;
+//        },
+//        // 生成一个图片验证码的编号，并设置页面中图片验证码img标签的src属性
+//        generate_image_code: function(){
+//            // 生成一个编号
+//            // 严格一点的使用uuid保证编号唯一， 不是很严谨的情况下，也可以使用时间戳
+//            this.image_code_id = this.generate_uuid();
+//
+//            // 设置页面中图片验证码img标签的src属性
+//            this.image_code_url = this.host + "/image_codes/" + this.image_code_id + "/";
+//        },
         // 检查用户名
         check_username: function (){
             var len = this.username.length;
             if(len<5||len>20) {
-                this.error_name_message = '请输入5-20个字符的用户名';
+                this.error_name_message = '请输入1-20个字符的用户名';
                 this.error_name = true;
             } else {
                 this.error_name = false;
@@ -251,44 +206,47 @@ var vm = new Vue({
 //            this.check_sms_code();
 //            this.check_allow();
 
-            if(this.error_name == false && this.error_password == false && this.error_check_password == false
-                && this.error_phone == false && this.error_sms_code == false && this.error_allow == false) {
+//            if(this.error_name == false && this.error_password == false && this.error_check_password == false
+//                && this.error_phone == false && this.error_sms_code == false && this.error_allow == false) {
 
-                axios.post(this.host + '/users/', {
-                        username: this.username,
-                        password: this.password,
-                        password2: this.password2,
-                    },
-//                    {
-//                        headers: {
+            axios.post(this.host + '/users/', {
+                    username: this.username,
+                    password: this.password,
+                    password2: this.password2,
+                    mobile: this.mobile,
+//                    sms_code: this.sms_code,
+//                    allow: this.allow.toString()
+                },
+                {
+//                  headers: {
 //                        'Authorization': 'JWT ' + this.token
 //                    },
-                        responseType: 'json'
-                    })
-                    .then(response => {
-                        // 记录用户的登录状态
-//                        sessionStorage.clear();
-//                        localStorage.clear();
+                    responseType: 'json'
+                })
+                .then(response => {
+                    // 记录用户的登录状态
+//                    sessionStorage.clear();
+//                    localStorage.clear();
 //
-//                        localStorage.token = response.data.token;
-//                        localStorage.username = response.data.username;
-//                        localStorage.user_id = response.data.id;
+//                    localStorage.token = response.data.token;
+//                    localStorage.username = response.data.username;
+//                    localStorage.user_id = response.data.id;
 
-                        location.href = '/index.html';
-                    })
-                    .catch(error=> {
-                        if (error.response.status == 400) {
-                            if ('non_field_errors' in error.response.data) {
-                                this.error_sms_code_message = error.response.data.non_field_errors[0];
-                            } else {
-                                this.error_sms_code_message = '数据有误';
-                            }
-                            this.error_sms_code = true;
+                    location.href = '/index.html';
+                })
+                .catch(error=> {
+                    if (error.response.status == 400) {
+                        if ('non_field_errors' in error.response.data) {
+                            this.error_sms_code_message = error.response.data.non_field_errors[0];
                         } else {
-                            console.log(error.response.data);
+                            this.error_sms_code_message = '数据有误';
                         }
-                    })
-            }
+                        this.error_sms_code = true;
+                    } else {
+                        console.log(error.response.data);
+                    }
+                })
         }
+//        }
     }
 });

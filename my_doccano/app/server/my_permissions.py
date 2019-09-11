@@ -7,11 +7,12 @@ class RegisterPermission(BasePermission):
 
     # 必须重写 has_permission
     def has_permission(self, request, view):
-        user_type = request.user.Role_id
+        user_type = request.user.role_id
         # user_type_name = request.user.get_user_type_display()
         # print(request.user.name)
         # print(user_type_name)
-        if user_type == 1:
+        print("has_permission")
+        if user_type == 2:
             return True
         else:
             return False
